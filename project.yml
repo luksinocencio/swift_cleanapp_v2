@@ -92,6 +92,17 @@ targets:
       - target: Data_macOS
       - target: Presentation_macOS
 
+  Validation:
+    templates:
+      - MacFramework
+    dependencies:
+      - target: Presentation_macOS
+  ValidationTests:
+    templates:
+      - MacFrameworkTests
+    dependencies:
+      - target: Presentation_macOS
+
 schemes:
   Domain:
     build:
@@ -158,6 +169,21 @@ schemes:
         - UI
       targets:
         - name: UITests
+          randomExecutionOrder: true
+
+  Validation:
+    build:
+      targets:
+        Validation: [run, test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - Validation
+      targets:
+        - name: ValidationTests
           randomExecutionOrder: true
 
 targetTemplates:
