@@ -52,6 +52,14 @@ targets:
     dependencies:
       - package: Alamofire
 
+  UseCaseIntegrationTests:
+    templates:
+      - MacFrameworkTests
+    dependencies:
+      - target: Data
+      - target: Domain
+      - target: Infra
+
 schemes:
   Data:
     build:
