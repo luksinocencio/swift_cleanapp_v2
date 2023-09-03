@@ -2,11 +2,11 @@ import Foundation
 
 @testable import Presentation
 
-class EmailValidatorSpy: EmailValidator {
+public class EmailValidatorSpy: EmailValidator {
     var isValid = true
     var email: String?
 
-    func isValid(email: String) -> Bool {
+    public func isValid(email: String) -> Bool {
         self.email = email
         return isValid
     }

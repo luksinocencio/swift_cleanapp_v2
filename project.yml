@@ -43,16 +43,18 @@ targets:
 
   Infra:
     templates:
-      - MacFramework
+      - CrossPlatform
     dependencies:
       - target: Data_macOS
+      - target: Data_iOS
+      - target: Validation
       - package: Alamofire
   InfraTests:
     templates:
-      - MacFrameworkTests
+      - CrossPlatformTests
     dependencies:
       - package: Alamofire
-      - target: Infra
+      - target: Infra_macOS
 
   Presentation:
     templates:
@@ -61,6 +63,7 @@ targets:
       - target: Domain_macOS
       - target: Domain_iOS
       - target: Data_macOS
+      - target: Data_iOS
   PresentationTests:
     templates:
       - CrossPlatformTests
@@ -75,8 +78,7 @@ targets:
     dependencies:
       - target: Data_macOS
       - target: Domain_macOS
-      - target: Domain_iOS
-      - target: Infra
+      - target: Infra_macOS
 
   UI:
     templates:
@@ -94,14 +96,32 @@ targets:
 
   Validation:
     templates:
-      - MacFramework
+      - iOSFramework
     dependencies:
-      - target: Presentation_macOS
+      - target: Presentation_iOS
   ValidationTests:
     templates:
-      - MacFrameworkTests
+      - iOSFrameworkTests
     dependencies:
-      - target: Presentation_macOS
+      - target: Presentation_iOS
+
+  Main:
+    templates:
+      - iOSApp
+    dependencies:
+      - target: Domain_iOS
+      - target: Data_iOS
+      - target: Infra_iOS
+      - target: Presentation_iOS
+      - target: UI
+      - target: Validation
+  MainTests:
+    templates:
+      - iOSAppTests
+    dependencies:
+      - target: Main
+      - target: UI
+      - target: Presentation_iOS
 
 schemes:
   Domain:
@@ -129,16 +149,16 @@ schemes:
   Infra:
     build:
       targets:
-        Infra: [run, test]
+        Infra_macOS: [run, test]
     run:
       config: Debug
     test:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - Infra
+        - Infra_macOS
       targets:
-        - name: InfraTests
+        - name: InfraTests_macOS
           randomExecutionOrder: true
 
   Presentation:
@@ -184,6 +204,23 @@ schemes:
         - Validation
       targets:
         - name: ValidationTests
+          randomExecutionOrder: true
+
+  Main:
+    build:
+      targets:
+        Main: [run, test, archive]
+    archive:
+      config: Release
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - Main
+      targets:
+        - name: MainTests
           randomExecutionOrder: true
 
 targetTemplates:
@@ -233,6 +270,25 @@ targetTemplates:
 
   CrossPlatformTests:
     platform: [macOS, iOS]
+    type: bundle.unit-test
+    sources:
+      - path: CleanApp/${target_name}
+      - path: CleanApp/XCTestCase/
+        createIntermediateGroups: false
+        type: group
+    info:
+      path: CleanApp/${target_name}/Info.plist
+
+  iOSApp:
+    platform: iOS
+    type: application
+    sources:
+      - path: CleanApp/${target_name}
+    settings:
+      INFOPLIST_FILE: CleanApp/${target_name}/Info.plist
+
+  iOSAppTests:
+    platform: iOS
     type: bundle.unit-test
     sources:
       - path: CleanApp/${target_name}
