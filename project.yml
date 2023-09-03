@@ -29,51 +29,90 @@ packages:
 targets:
   Domain:
     templates:
-      - MacFramework
+      - CrossPlatform
 
   Data:
     templates:
-      - MacFramework
+      - CrossPlatform
     dependencies:
-      - target: Domain
+      - target: Domain_macOS
+      - target: Domain_iOS
   DataTests:
     templates:
-      - MacFrameworkTests
+      - CrossPlatformTests
 
   Infra:
     templates:
       - MacFramework
     dependencies:
-      - target: Data
+      - target: Data_macOS
       - package: Alamofire
   InfraTests:
     templates:
       - MacFrameworkTests
     dependencies:
       - package: Alamofire
+      - target: Infra
+
+  Presentation:
+    templates:
+      - CrossPlatform
+    dependencies:
+      - target: Domain_macOS
+      - target: Domain_iOS
+      - target: Data_macOS
+  PresentationTests:
+    templates:
+      - CrossPlatformTests
+    dependencies:
+      - target: Presentation_macOS
+      - target: Data_macOS
+      - target: Domain_macOS
 
   UseCaseIntegrationTests:
     templates:
       - MacFrameworkTests
     dependencies:
-      - target: Data
-      - target: Domain
+      - target: Data_macOS
+      - target: Domain_macOS
+      - target: Domain_iOS
       - target: Infra
 
+  UI:
+    templates:
+      - iOSFramework
+    dependencies:
+      - target: Presentation_iOS
+      - target: Data_iOS
+  UITests:
+    templates:
+      - iOSFrameworkTests
+    dependencies:
+      - target: UI
+      - target: Data_macOS
+      - target: Presentation_macOS
+
 schemes:
+  Domain:
+    build:
+      targets:
+        Domain_macOS: [run, test]
+    run:
+      config: Debug
+
   Data:
     build:
       targets:
-        Data: [run, test]
+        Data_macOS: [run, test]
     run:
       config: Debug
     test:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - Data
+        - Data_macOS
       targets:
-        - name: DataTests
+        - name: DataTests_macOS
           randomExecutionOrder: true
 
   Infra:
@@ -91,6 +130,36 @@ schemes:
         - name: InfraTests
           randomExecutionOrder: true
 
+  Presentation:
+    build:
+      targets:
+        Presentation_macOS: [run, test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - Presentation_macOS
+      targets:
+        - name: PresentationTests_macOS
+          randomExecutionOrder: true
+
+  UI:
+    build:
+      targets:
+        UI: [run, test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - UI
+      targets:
+        - name: UITests
+          randomExecutionOrder: true
+
 targetTemplates:
   MacFramework:
     platform: macOS
@@ -106,5 +175,43 @@ targetTemplates:
     sources:
       - path: CleanApp/${target_name}
       - path: CleanApp/XCTestCase/
+    info:
+      path: CleanApp/${target_name}/Info.plist
+
+  iOSFramework:
+    platform: iOS
+    type: framework
+    sources:
+      - path: CleanApp/${target_name}
+    info:
+      path: CleanApp/${target_name}/Info.plist
+
+  iOSFrameworkTests:
+    platform: iOS
+    type: bundle.unit-test
+    sources:
+      - path: CleanApp/${target_name}
+      - path: CleanApp/XCTestCase/
+        createIntermediateGroups: false
+        type: group
+    info:
+      path: CleanApp/${target_name}/Info.plist
+
+  CrossPlatform:
+    platform: [macOS, iOS]
+    type: framework
+    sources:
+      - path: CleanApp/${target_name}
+    info:
+      path: CleanApp/${target_name}/Info.plist
+
+  CrossPlatformTests:
+    platform: [macOS, iOS]
+    type: bundle.unit-test
+    sources:
+      - path: CleanApp/${target_name}
+      - path: CleanApp/XCTestCase/
+        createIntermediateGroups: false
+        type: group
     info:
       path: CleanApp/${target_name}/Info.plist
