@@ -1,0 +1,47 @@
+name: CleanApp
+
+settings:
+  MARKETING_VERSION: "0.1.0"
+  SWIFT_VERSION: 5.7
+  VERSIONING_SYSTEM: "apple-generic"
+  CLANG_ENABLE_OBJC_WEAK: "YES"
+  ARCHS: $(ARCHS_STANDARD)
+
+options:
+  xcodeVersion: "14.3.1"
+  bundleIdPrefix: com.devmeist3r
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+  developmentLanguage: "pt-BR"
+  deploymentTarget:
+    iOS: 13.0
+    macOS: 12.0
+
+configs:
+  Debug: debug
+  Release: release
+
+targets:
+  Domain:
+    templates:
+      - MacFramework
+
+targetTemplates:
+  MacFramework:
+    platform: macOS
+    type: framework
+    sources:
+      - path: CleanApp/${target_name}
+    info:
+      path: CleanApp/${target_name}/Info.plist
+
+  MacFrameworkTests:
+    platform: macOS
+    type: bundle.unit-test
+    sources:
+      - path: CleanApp/${target_name}
+      - path: CleanApp/XCTestCase/
+        createIntermediateGroups: false
+        type: group
+    info:
+      path: CleanApp/${target_name}/Info.plist
