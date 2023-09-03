@@ -26,6 +26,15 @@ targets:
     templates:
       - MacFramework
 
+  Data:
+    templates:
+      - MacFramework
+    dependencies:
+      - target: Domain
+  DataTests:
+    templates:
+      - MacFrameworkTests
+
 targetTemplates:
   MacFramework:
     platform: macOS
@@ -40,8 +49,5 @@ targetTemplates:
     type: bundle.unit-test
     sources:
       - path: CleanApp/${target_name}
-      - path: CleanApp/XCTestCase/
-        createIntermediateGroups: false
-        type: group
     info:
       path: CleanApp/${target_name}/Info.plist
