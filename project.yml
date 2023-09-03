@@ -35,6 +35,22 @@ targets:
     templates:
       - MacFrameworkTests
 
+schemes:
+  Data:
+    build:
+      targets:
+        Data: [run, test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - Data
+      targets:
+        - name: DataTests
+          randomExecutionOrder: true
+
 targetTemplates:
   MacFramework:
     platform: macOS
