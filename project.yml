@@ -40,6 +40,8 @@ targets:
   DataTests:
     templates:
       - CrossPlatformTests
+    dependencies:
+      - target: Presentation_macOS
 
   Infra:
     templates:
@@ -47,7 +49,7 @@ targets:
     dependencies:
       - target: Data_macOS
       - target: Data_iOS
-      - target: Validation
+      - target: Validation_macOS
       - package: Alamofire
   InfraTests:
     templates:
@@ -55,6 +57,7 @@ targets:
     dependencies:
       - package: Alamofire
       - target: Infra_macOS
+      - target: Validation_macOS
 
   Presentation:
     templates:
@@ -96,13 +99,14 @@ targets:
 
   Validation:
     templates:
-      - iOSFramework
+      - CrossPlatform
     dependencies:
       - target: Presentation_iOS
   ValidationTests:
     templates:
-      - iOSFrameworkTests
+      - CrossPlatformTests
     dependencies:
+      - target: Validation_iOS
       - target: Presentation_iOS
 
   Main:
@@ -114,7 +118,7 @@ targets:
       - target: Infra_iOS
       - target: Presentation_iOS
       - target: UI
-      - target: Validation
+      - target: Validation_iOS
   MainTests:
     templates:
       - iOSAppTests
@@ -194,16 +198,16 @@ schemes:
   Validation:
     build:
       targets:
-        Validation: [run, test]
+        Validation_iOS: [run, test]
     run:
       config: Debug
     test:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - Validation
+        - Validation_iOS
       targets:
-        - name: ValidationTests
+        - name: ValidationTests_iOS
           randomExecutionOrder: true
 
   Main:
@@ -221,6 +225,30 @@ schemes:
         - Main
       targets:
         - name: MainTests
+          randomExecutionOrder: true
+
+  CI:
+    build:
+      targets:
+        Domain_macOS: [run, test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - Domain_macOS
+        - Data_macOS
+        - Infra_macOS
+        - Presentation_iOS
+        - Main
+        - Validation_iOS
+      targets:
+        - name: DataTests_macOS
+        - name: InfraTests_macOS
+        - name: PresentationTests_iOS
+        - name: MainTests
+        - name: Validation_iOS
           randomExecutionOrder: true
 
 targetTemplates:
