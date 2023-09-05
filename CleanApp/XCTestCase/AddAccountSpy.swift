@@ -1,8 +1,6 @@
 import Foundation
-
-@testable import Presentation
-@testable import Data
-@testable import Domain
+import Data
+import Domain
 
 public class AddAccountSpy: AddAccount {
     var addAccountModel: AddAccountModel?

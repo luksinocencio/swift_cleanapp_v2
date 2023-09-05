@@ -41,6 +41,7 @@ targets:
     templates:
       - CrossPlatformTests
     dependencies:
+      - target: Validation_macOS
       - target: Presentation_macOS
 
   Infra:

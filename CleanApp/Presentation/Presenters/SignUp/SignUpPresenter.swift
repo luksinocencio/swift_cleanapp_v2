@@ -4,7 +4,7 @@ import Domain
 public final class SignUpPresenter {
     private weak var alertView: (AlertView)?
     private let addAccount: AddAccount
-    private weak var loadingView: (LoadingView)?
+    private var loadingView: LoadingView
     private var validation: Validation
     
     public init(
@@ -23,7 +23,7 @@ public final class SignUpPresenter {
         if let message = validation.validate(data: viewModel.toJson()) {
             alertView?.showMessage(viewModel: AlertViewModel(title: "Falha na validação", message: message))
         } else {
-            loadingView?.display(viewModel: LoadingViewModel(isLoading: true))
+            loadingView.display(viewModel: LoadingViewModel(isLoading: true))
             addAccount.add(addAccountModel: SignUpMapper.toAddAccountModel(viewModel: viewModel)) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
