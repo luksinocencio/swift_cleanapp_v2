@@ -35,54 +35,51 @@ targets:
     templates:
       - CrossPlatform
     dependencies:
-      - target: Domain_macOS
       - target: Domain_iOS
   DataTests:
     templates:
       - CrossPlatformTests
     dependencies:
-      - target: Validation_macOS
-      - target: Presentation_macOS
+      - target: Validation_iOS
+      - target: Presentation_iOS
 
   Infra:
     templates:
       - CrossPlatform
     dependencies:
-      - target: Data_macOS
       - target: Data_iOS
-      - target: Validation_macOS
+      - target: Validation_iOS
       - package: Alamofire
   InfraTests:
     templates:
       - CrossPlatformTests
     dependencies:
       - package: Alamofire
-      - target: Infra_macOS
-      - target: Validation_macOS
+      - target: Infra_iOS
+      - target: Validation_iOS
 
   Presentation:
     templates:
       - CrossPlatform
     dependencies:
-      - target: Domain_macOS
       - target: Domain_iOS
-      - target: Data_macOS
       - target: Data_iOS
   PresentationTests:
     templates:
       - CrossPlatformTests
     dependencies:
-      - target: Presentation_macOS
-      - target: Data_macOS
-      - target: Domain_macOS
+      - target: Presentation_iOS
+      - target: Data_iOS
+      - target: Domain_iOS
+      - target: Validation_iOS
 
   UseCaseIntegrationTests:
     templates:
       - MacFrameworkTests
     dependencies:
-      - target: Data_macOS
-      - target: Domain_macOS
-      - target: Infra_macOS
+      - target: Data_iOS
+      - target: Domain_iOS
+      - target: Infra_iOS
 
   UI:
     templates:
@@ -95,8 +92,8 @@ targets:
       - iOSFrameworkTests
     dependencies:
       - target: UI
-      - target: Data_macOS
-      - target: Presentation_macOS
+      - target: Data_iOS
+      - target: Presentation_iOS
 
   Validation:
     templates:
@@ -132,53 +129,53 @@ schemes:
   Domain:
     build:
       targets:
-        Domain_macOS: [run, test]
+        Domain_iOS: [run, test]
     run:
       config: Debug
 
   Data:
     build:
       targets:
-        Data_macOS: [run, test]
+        Data_iOS: [run, test]
     run:
       config: Debug
     test:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - Data_macOS
+        - Data_iOS
       targets:
-        - name: DataTests_macOS
+        - name: DataTests_iOS
           randomExecutionOrder: true
 
   Infra:
     build:
       targets:
-        Infra_macOS: [run, test]
+        Infra_iOS: [run, test]
     run:
       config: Debug
     test:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - Infra_macOS
+        - Infra_iOS
       targets:
-        - name: InfraTests_macOS
+        - name: InfraTests_iOS
           randomExecutionOrder: true
 
   Presentation:
     build:
       targets:
-        Presentation_macOS: [run, test]
+        Presentation_iOS: [run, test]
     run:
       config: Debug
     test:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - Presentation_macOS
+        - Presentation_iOS
       targets:
-        - name: PresentationTests_macOS
+        - name: PresentationTests_iOS
           randomExecutionOrder: true
 
   UI:
@@ -231,25 +228,27 @@ schemes:
   CI:
     build:
       targets:
-        Domain_macOS: [run, test]
+        Domain_iOS: [run, test]
     run:
       config: Debug
     test:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - Domain_macOS
-        - Data_macOS
-        - Infra_macOS
+        - Domain_iOS
+        - Data_iOS
+        - Infra_iOS
         - Presentation_iOS
-        # - Main
         - Validation_iOS
+        - UI
+        # - Main
       targets:
-        - name: DataTests_macOS
-        - name: InfraTests_macOS
+        - name: DataTests_iOS
+        - name: InfraTests_iOS
         - name: PresentationTests_iOS
-        # - name: MainTests
         - name: Validation_iOS
+        - name: UI
+          # - name: MainTests
           randomExecutionOrder: true
 
 targetTemplates:
