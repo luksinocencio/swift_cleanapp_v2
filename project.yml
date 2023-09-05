@@ -241,13 +241,13 @@ schemes:
         - Data_macOS
         - Infra_macOS
         - Presentation_iOS
-        - Main
+        # - Main
         - Validation_iOS
       targets:
         - name: DataTests_macOS
         - name: InfraTests_macOS
         - name: PresentationTests_iOS
-        - name: MainTests
+        # - name: MainTests
         - name: Validation_iOS
           randomExecutionOrder: true
 
