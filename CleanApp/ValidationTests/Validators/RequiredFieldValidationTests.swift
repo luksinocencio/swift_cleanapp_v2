@@ -28,7 +28,6 @@ final class RequiredFieldValidationTests: XCTestCase {
     }
 }
 
-
 extension RequiredFieldValidationTests {
     func makeSut(
         fieldName: String,
