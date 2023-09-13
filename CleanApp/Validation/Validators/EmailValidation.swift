@@ -1,7 +1,7 @@
 import Foundation
 import Presentation
 
-public class EmailValidation: Validation {
+public class EmailValidation: Validation, Equatable {
     private let fieldName: String
     private let fieldLabel: String
     private let emailValidator: EmailValidator
@@ -17,5 +17,9 @@ public class EmailValidation: Validation {
             return "O campo \(fieldLabel) é inválido"
         }
         return nil
+    }
+    
+    public static func == (lhs: EmailValidation, rhs: EmailValidation) -> Bool {
+        return lhs.fieldLabel == rhs.fieldLabel && lhs.fieldName == rhs.fieldName
     }
 }

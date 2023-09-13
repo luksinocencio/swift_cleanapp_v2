@@ -2,23 +2,6 @@ import XCTest
 @testable import Presentation
 @testable import Validation
 
-final class ValidationComposite: Validation {
-    let validations: [Validation]
-    
-    init(validations: [Validation]) {
-        self.validations = validations
-    }
-    
-    func validate(data: [String: Any]?) -> String? {
-        for validation in validations {
-            if let errorMessage = validation.validate(data: data) {
-                return errorMessage
-            }
-        }
-        return nil
-    }
-}
-
 class ValidationCompositeTests: XCTestCase {
     func test_validate_should_return_error_if_validation_fails() {
         let validationSpy = ValidationSpy()

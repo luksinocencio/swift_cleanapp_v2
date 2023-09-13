@@ -1,12 +1,12 @@
 import Foundation
 import Presentation
 
-public class CompareFieldsValidation: Validation {
+public class CompareFieldsValidation: Validation, Equatable {
     private let fieldName: String
     private let fieldNameToCompare: String
     private let fiedlLabel: String
     
-    init(fieldName: String, fieldNameToCompare: String, fiedlLabel: String) {
+    public init(fieldName: String, fieldNameToCompare: String, fiedlLabel: String) {
         self.fieldName = fieldName
         self.fieldNameToCompare = fieldNameToCompare
         self.fiedlLabel = fiedlLabel
@@ -20,5 +20,11 @@ public class CompareFieldsValidation: Validation {
             return  "O campo \(fiedlLabel) é inválido"
         }
         return nil
+    }
+    
+    public static func == (lhs: CompareFieldsValidation, rhs: CompareFieldsValidation) -> Bool {
+        return lhs.fieldName == rhs.fieldName &&
+        lhs.fiedlLabel == rhs.fiedlLabel &&
+        lhs.fieldNameToCompare == rhs.fieldNameToCompare
     }
 }
