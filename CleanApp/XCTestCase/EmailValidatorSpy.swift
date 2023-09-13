@@ -1,6 +1,5 @@
 import Foundation
-
-@testable import Presentation
+import Validation
 
 public class EmailValidatorSpy: EmailValidator {
     var isValid = true
