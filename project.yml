@@ -40,7 +40,7 @@ targets:
     templates:
       - CrossPlatformTests
     dependencies:
-      - target: Validation_iOS
+      - target: Validation
       - target: Presentation_iOS
 
   Infra:
@@ -48,30 +48,31 @@ targets:
       - CrossPlatform
     dependencies:
       - target: Data_iOS
-      - target: Validation_iOS
+      - target: Validation
       - package: Alamofire
   InfraTests:
     templates:
       - CrossPlatformTests
     dependencies:
       - package: Alamofire
-      - target: Infra_iOS
-      - target: Validation_iOS
+      - target: Validation
+      - target: Infra_macOS
 
   Presentation:
     templates:
       - CrossPlatform
     dependencies:
       - target: Domain_iOS
+      - target: Data_macOS
       - target: Data_iOS
   PresentationTests:
     templates:
       - CrossPlatformTests
     dependencies:
       - target: Presentation_iOS
-      - target: Data_iOS
       - target: Domain_iOS
-      - target: Validation_iOS
+      - target: Validation
+      - target: Data_macOS
 
   UseCaseIntegrationTests:
     templates:
@@ -97,15 +98,17 @@ targets:
 
   Validation:
     templates:
-      - CrossPlatform
+      - MacFramework
     dependencies:
-      - target: Presentation_iOS
+      - target: Presentation_macOS
+      - target: Data_macOS
   ValidationTests:
     templates:
-      - CrossPlatformTests
+      - MacFrameworkTests
     dependencies:
-      - target: Validation_iOS
-      - target: Presentation_iOS
+      - target: Validation
+      - target: Presentation_macOS
+      - target: Data_macOS
 
   Main:
     templates:
@@ -116,7 +119,7 @@ targets:
       - target: Infra_iOS
       - target: Presentation_iOS
       - target: UI
-      - target: Validation_iOS
+      - target: Validation
   MainTests:
     templates:
       - iOSAppTests
@@ -196,16 +199,16 @@ schemes:
   Validation:
     build:
       targets:
-        Validation_iOS: [run, test]
+        Validation: [run, test]
     run:
       config: Debug
     test:
       config: Debug
       gatherCoverageData: true
       coverageTargets:
-        - Validation_iOS
+        - Validation
       targets:
-        - name: ValidationTests_iOS
+        - name: ValidationTests
           randomExecutionOrder: true
 
   Main:
@@ -239,16 +242,38 @@ schemes:
         - Data_iOS
         - Infra_iOS
         - Presentation_iOS
-        - Validation_iOS
+        - Validation
         - UI
         # - Main
       targets:
         - name: DataTests_iOS
         - name: InfraTests_iOS
         - name: PresentationTests_iOS
-        - name: Validation_iOS
+        - name: Validation
         - name: UI
           # - name: MainTests
+          randomExecutionOrder: true
+
+  Core:
+    build:
+      targets:
+        Domain_macOS: [run, test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      coverageTargets:
+        - Validation
+        - Domain_macOS
+        - Data_macOS
+        - Infra_macOS
+        - Presentation_macOS
+      targets:
+        - name: ValidationTests
+        - name: DataTests_macOS
+        - name: InfraTests_macOS
+        - name: PresentationTests_macOS
           randomExecutionOrder: true
 
 targetTemplates:
